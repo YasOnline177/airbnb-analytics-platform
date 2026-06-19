@@ -15,3 +15,8 @@ Given the 1 week timeframe, I chose to go deep on a single city rather than spre
 - `docs/decision_log.md` - engineering decisions and trade-offs made along the way 
 
 ## Reproducibility
+1. Clone the repo
+2. Create a virtual environment and install dependencies:
+    python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt
+3. Download the dataset: python -m src.ingestion.download_data
+4. Generate the profiling report: python -m src.ingestion.profile_data
