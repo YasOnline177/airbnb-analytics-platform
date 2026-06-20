@@ -29,3 +29,10 @@ For duplicate detection, I checked for:
 I used Python's built-in `difflib` library for the fuzzy matching step. Since comparisons are only made within each host's listings rather than across the entire dataset, a dedicated package such as `rapidfuzz` would have addded extra complexity without much benefit.
 
 For location validation, I used an Edinburgh-specific latitude and longitude range rather than a generic coordinate check. This makes it easier to identify listings that have valid coordinates but are clearly outside the city and may indicate data quality issues. 
+
+## Cleaning Decisions
+Dropped 11 listings with missing or non-positive prices. Price is required for most of the planned analysis, so keeping these rows would have limited their usefulness. All dropped rows were logged to `reports/dropped_rows_log.csv` to keep the cleaning process transparent. 
+
+For price outliers, minimum night outliers, potential duplicate listings, and listings outside the expected Edinburgh coordinate range, I chose to flag them rather than remove them. In each case, the records could represent genuine data rather tha errors. For example, a very expensive listing could be a luxury property, a high minimum stay could indicate a long-term rental, and a flagged duplicate could simply be multiple units managed by the same host. Keeping these records and adding flag columns preserves the data while allowing later analysis to decide whether they should be excluded. 
+
+Grouped `property_type` into five broader categories (entire place, private room, shared room, hotel room, and other) to make analysis and visualizations easier to interpret. The original `property_type` column was kept unchanged so that no information was lost. 
