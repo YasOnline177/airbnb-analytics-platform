@@ -36,3 +36,12 @@ Dropped 11 listings with missing or non-positive prices. Price is required for m
 For price outliers, minimum night outliers, potential duplicate listings, and listings outside the expected Edinburgh coordinate range, I chose to flag them rather than remove them. In each case, the records could represent genuine data rather tha errors. For example, a very expensive listing could be a luxury property, a high minimum stay could indicate a long-term rental, and a flagged duplicate could simply be multiple units managed by the same host. Keeping these records and adding flag columns preserves the data while allowing later analysis to decide whether they should be excluded. 
 
 Grouped `property_type` into five broader categories (entire place, private room, shared room, hotel room, and other) to make analysis and visualizations easier to interpret. The original `property_type` column was kept unchanged so that no information was lost. 
+
+## Calendar & Review Enrichment
+Computed occupancy rate and estimated annual revenue from `calendar.csv`.
+
+These values should be treated as estimates rather than exact figures because the Inside Airbnb calendar data does not distinguish between nights that were booked and nights that were manually blocked by the host. 
+
+Recalculated review counts from `reviews.csv` rather than relying on the `number_of_reviews` field in `listings.csv`. Comparing the two provided a useful validation check after joining the datasets. 
+
+Used DuckDB to aggregate the large `calendar.csv` dataset before loading the results into pandas. This avoided loading millions of rows into memory and made the enrichment step much faster. 
