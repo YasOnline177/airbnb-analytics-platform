@@ -45,3 +45,10 @@ These values should be treated as estimates rather than exact figures because th
 Recalculated review counts from `reviews.csv` rather than relying on the `number_of_reviews` field in `listings.csv`. Comparing the two provided a useful validation check after joining the datasets. 
 
 Used DuckDB to aggregate the large `calendar.csv` dataset before loading the results into pandas. This avoided loading millions of rows into memory and made the enrichment step much faster. 
+
+## Derived Fields & Neighbourhood Aggregates
+Calculated `host_tenure_years` and `reviews_per_month` relative to the dataset snapshot date (2025-09-21) rather than the current date. This ensures the results remain consistent if the pipeline is rerun in the future.
+
+Left `reviews_per_month` as null for listings with no reviews, since a review frequency cannot be calculated without any review history. Left `price_per_bedrrom` as null for listings with zero bedrooms rather than assigning an arbitrary value or dividing by zero. 
+
+Added neighbourhood-level metrics such as median price, average rating, and listing count so that individual listings can be analysed in the context of their local market. 
