@@ -96,7 +96,7 @@ def flag_outliers(df: pd.DataFrame) -> pd.DataFrame:
 def flag_near_duplicates(df: pd.DataFrame) -> pd.DataFrame:
     near_dupes = find_near_duplicate_listings(df.assign(price_numeric=df["price_clean"]))
     duplicate_ids = set(near_dupes["listing_id_a"]).union(near_dupes["listing_id_b"])
-    df["is_protential_duplicate"] = df["id"].isin(duplicate_ids)
+    df["is_potential_duplicate"] = df["id"].isin(duplicate_ids)
     print(f"{len(duplicate_ids)} listings flagged as potential duplicates for review")
     return df
 

@@ -18,17 +18,12 @@ def compute_calendar_metrics() -> pd.DataFrame:
         SELECT
             listing_id,
             COUNT(*) AS total_nights,
-            SUM(CASE WHEN available = 'f' THEN 1 ELSE 0 END) AS booked_nights,
-            AVG(TRY_CAST(regexp_replace(price, '[^0-9.]', '', 'g') AS DOUBLE)) AS avg_price_calendar
+            SUM(CASE WHEN available = 'f' THEN 1 ELSE 0 END) AS booked_nights
         FROM read_csv_auto('{RAW_DIR / "calendar.csv"}')
         GROUP BY listing_id
     """
     df = duckdb.sql(query).to_df()
-
-    # Airbnb calendar availability does not distinguish confirmed bookings from host-blocked dates, so occupancy is an entimate. 
     df["occupancy_rate"] = df["booked_nights"] / df["total_nights"]
-    df["estimated_annual_revenue"] = df["booked_nights"] * df["avg_price_calendar"]
-
     return df
 
 def compute_review_metrics() -> pd.DataFrame:
@@ -58,6 +53,7 @@ def main():
     enriched = listings.merge(calendar_metrics, on="id", how="left")
     enriched = enriched.merge(review_metrics, on="id", how="left")
 
+    enriched["estimated_annual_revenue"] = enriched["booked_nights"]
     # Listings with no reviews do not appear in reviews.csv so 0 is valid value
     enriched["review_count_computed"] = enriched["review_count_computed"].fillna(0).astype(int)
 
