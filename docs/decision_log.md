@@ -52,3 +52,14 @@ Calculated `host_tenure_years` and `reviews_per_month` relative to the dataset s
 Left `reviews_per_month` as null for listings with no reviews, since a review frequency cannot be calculated without any review history. Left `price_per_bedrrom` as null for listings with zero bedrooms rather than assigning an arbitrary value or dividing by zero. 
 
 Added neighbourhood-level metrics such as median price, average rating, and listing count so that individual listings can be analysed in the context of their local market. 
+
+## Star Schema Design
+Built two fact tables that share the same dimensions rather than creating one large flat table:
+    - `fact_listing_snapshot` (one row per listing) for current listing-level metrics
+    - `fact_calendar_daily` (one row per listing per day) for time-based analysis such as weekday vs weekend pricing
+
+Considered combining calendar data and listing data into a single table, but the grains do not match. Storing everything at the calendar level would duplicate listing attributes hundreds of times, while aggregating calendar data to listing level would lose the daily detail needed for later analysis and hypothesis testing. 
+
+Did not implement slowly changing dimensions (SCDs). This project uses a single Airbnb snapshot from 21 September 2025, so there is no historical data to track. Every dimension therefore represents the current state only. If additional quarterly snapshots were added in the future, dimensions such as `dim_host` and `dim_neighbourhood` could be extended with effective dates and SCD Type 2 logic to capture changes over time. 
+
+Kept `listings_master.csv` as a separate denormalized dataset alongside the star schema. The flat file is convenient for exploratory analysis in pandas, while the star schema is better suited for SQL analytics and avoids repeatedly storing neighbourhood and host-level attributes on every listing row. 
