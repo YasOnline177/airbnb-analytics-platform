@@ -81,3 +81,13 @@ Used latitude/longitude coordinates with matplotlib visualisations and a haversi
 The project already had point coordinates for every listing, and the planned geographic analyses (listing density, spatial distribution of review scores, property-type clustering, and distance-from-centre pricing patterns) only required point-level calculations and visualisation. These questions could be answered effectively using pandas, NumPy, and matplotlib without additional GIS tooling.
 
 GeoPandas was considered, but would have introduced extra dependencies and complexity for features such as spatial joins and polygon-based analysis that were not required for the current project scope. If the Open Innovation section is expanded into an interactive mapping product in future work, GIS tooling such as GeoPandas or Folium would be a natural extension.
+
+## Temporal and Host Analysis Decisions 
+
+The Edinburgh snapshot's `calendar.csv` file contains no usable daily price data, making calendar-based price trend analysis impossible. Instead, the temporal analysis focuses on booking and availability rates by month, which are fully populated in the dataset.
+
+The calendar data represents the year ahead of the snapshot date rather than historical activity. As a result, monthly booking rates should be interpreted as a measure of advance booking behaviour rather than historical seasonal demand.
+
+Review volume by month was used as a separate demand proxy based on `reviews.csv`. The final month of the series was interpreted cautiously because the dataset was collected partway through the month and guests often leave reviews days or weeks after their stay, creating an artificial decline at the end of the timeline.
+
+Hosts were segmented into three groups based on portfolio size: single-listing hosts, small operators (2–5 listings), and professional operators (6+ listings). Fixed thresholds were used instead of a clustering approach because the resulting groups are straightforward to interpret and communicate while still capturing meaningful differences in host scale.
