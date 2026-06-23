@@ -103,7 +103,7 @@ Review volume by month was used as a separate demand proxy based on `reviews.csv
 
 Hosts were segmented into three groups based on portfolio size: single-listing hosts, small operators (2–5 listings), and professional operators (6+ listings). Fixed thresholds were used instead of a clustering approach because the resulting groups are straightforward to interpret and communicate while still capturing meaningful differences in host scale.
 
-## Statistical Test Selection 
+## Statistical Test Selection
 
 Used Mann-Whitney U instead of an independent-samples t-test for H1 and H2, and Kruskal-Wallis instead of one-way ANOVA for H4. This decision was based on patterns identified during exploratory analysis: Airbnb prices are heavily right-skewed with extreme outliers, while review scores exhibit a strong ceiling effect with most values clustered near the maximum rating. Assumptions were formally checked in the notebook before finalising the test selection.
 
@@ -114,3 +114,13 @@ Used bootstrap confidence intervals for group means rather than relying on norma
 For H4, neighbourhoods with 20 or fewer listings were excluded from the analysis. This matches the threshold used elsewhere in the project and reduces the influence of very small neighbourhood samples on the comparison.
 
 Did not run a post-hoc pairwise comparison following the Kruskal-Wallis test. The objective was to establish whether neighbourhood price distributions differed overall, while neighbourhood rankings and geographic analysis had already identified the locations associated with higher and lower prices. A formal post-hoc procedure would be a reasonable extension for future work if specific neighbourhood pairs needed to be compared.
+
+## Correlation & Regression Decisions
+
+Used log1p(price) rather than raw price because listing prices are heavily right-skewed and contain extreme outliers. The transformation reduces skew and produces a more stable target for regression modelling.
+
+Used VIF alongside the correlation matrix to assess multicollinearity. While several property-size variables are strongly correlated, the VIF results confirmed that the overlap was not severe enough to justify removing predictors from the model.
+
+Recomputed distance_from_centre_km in this notebook rather than adding it to the processing pipeline. The feature was originally created for the geographic analysis and was only reused here once it proved useful as a pricing predictor.
+
+Added scipy and statsmodels to requirements.txt after discovering both were being used by the analysis notebooks without being explicitly declared as project dependencies.
