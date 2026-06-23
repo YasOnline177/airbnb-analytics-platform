@@ -6,3 +6,4 @@ seaborn
 requests
 python-dotenv
 jupyter
+scipy
