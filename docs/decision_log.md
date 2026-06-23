@@ -73,3 +73,11 @@ This affected two parts of the project:
 2. The original weekday vs weekend pricing hypothesis could not be tested because no daily price information was available. This hypothesis was replaced with a neighbourhood price comparison using listing-level prices. 
 
 This limitation and workaround are documented so that results are interpreted appropriately. 
+
+## Geographic Analysis Tooling
+
+Used latitude/longitude coordinates with matplotlib visualisations and a haversine distance calculation rather than introducing GeoPandas or Folium.
+
+The project already had point coordinates for every listing, and the planned geographic analyses (listing density, spatial distribution of review scores, property-type clustering, and distance-from-centre pricing patterns) only required point-level calculations and visualisation. These questions could be answered effectively using pandas, NumPy, and matplotlib without additional GIS tooling.
+
+GeoPandas was considered, but would have introduced extra dependencies and complexity for features such as spatial joins and polygon-based analysis that were not required for the current project scope. If the Open Innovation section is expanded into an interactive mapping product in future work, GIS tooling such as GeoPandas or Folium would be a natural extension.
