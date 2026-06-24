@@ -134,3 +134,9 @@ Excluded neighbourhood_median_price from the feature set to avoid target leakage
 Imputed missing review scores using the median and added a has_no_reviews indicator, allowing the model to generate predictions for new listings without reviews.
 
 Model performance was evaluated after transforming predictions back to GBP, ensuring that MAE and RMSE are reported in meaningful real-world units rather than log-transformed values.
+
+## Price Model Evaluation - MAE vs MedAE
+
+The winning model's MAE (£158.45) appeared high relative to typical Edinburgh Airbnb prices, so a naive median-price baseline and Median Absolute Error (MedAE) were added to provide a more robust evaluation. The model outperformed the baseline while showing a much lower MedAE than MAE, indicating that a small number of extreme-price listings have a disproportionate impact on average error metrics.
+
+Further analysis confirmed that the IQR-based price outliers identified during data cleaning (~7% of listings) account for most of the model's total absolute error. For normal-priced listings, the model's MAE was only £44.95, while outlier listings produced substantially larger errors. This shows that the model performs reasonably well for the majority of listings, with most prediction error concentrated among a small number of unusually expensive properties.
