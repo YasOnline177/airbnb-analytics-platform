@@ -8,3 +8,5 @@ python-dotenv
 jupyter
 scipy
 statsmodels
+scikit-learn
+shap

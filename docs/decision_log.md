@@ -124,3 +124,13 @@ Used VIF alongside the correlation matrix to assess multicollinearity. While sev
 Recomputed distance_from_centre_km in this notebook rather than adding it to the processing pipeline. The feature was originally created for the geographic analysis and was only reused here once it proved useful as a pricing predictor.
 
 Added scipy and statsmodels to requirements.txt after discovering both were being used by the analysis notebooks without being explicitly declared as project dependencies.
+
+## Price Prediction Model
+
+Trained three model families (Ridge, Random Forest, and Gradient Boosting) using default hyperparameters. Hyperparameter tuning was not performed due to the project's time constraints and is identified as a future improvement.
+
+Excluded neighbourhood_median_price from the feature set to avoid target leakage, as it is derived from listing prices themselves. Neighbourhood encoding was limited to the 15 most common neighbourhoods plus an "Other" category to avoid creating a large number of sparse dummy variables.
+
+Imputed missing review scores using the median and added a has_no_reviews indicator, allowing the model to generate predictions for new listings without reviews.
+
+Model performance was evaluated after transforming predictions back to GBP, ensuring that MAE and RMSE are reported in meaningful real-world units rather than log-transformed values.
